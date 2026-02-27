@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-service
+  namespace: mosi
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: ml-service } }
+  template:
+    metadata: { labels: { app: ml-service } }
+    spec:
+      containers:
+      - name: ml-service
+        image: ghcr.io/example/mosi-ml:latest
+        ports: [{ containerPort: 8010 }]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-service
+  namespace: mosi
+spec:
+  selector: { app: ml-service }
+  ports: [{ port: 8010, targetPort: 8010 }]
